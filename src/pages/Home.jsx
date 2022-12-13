@@ -26,7 +26,6 @@ const Home = () => {
         className="flex
      bg-blue-400 p-6 mb-5 justify-between "
       >
-        
         <input
           className="p-1 rounded-lg sticky"
           placeholder="Search..."
@@ -53,7 +52,7 @@ const Home = () => {
               ) {
                 return post;
               }
-              return false
+              return false;
             })
             .map((product, index) => (
               <div className="box" key={index}>
