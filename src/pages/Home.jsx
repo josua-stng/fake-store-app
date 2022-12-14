@@ -5,10 +5,13 @@ import Product from "../components/Product";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [searchBar, setSearchBar] = useState("");
+  const [loadingProduct,setLoadingProduct]= useState(true)
   const getProduct = async () => {
+    setLoadingProduct(true)
     const response = await fetch("https://fakestoreapi.com/products");
     const data = await response.json();
     setProducts(data);
+    setLoadingProduct(false)
   };
 
   useEffect(() => {
@@ -19,6 +22,8 @@ const Home = () => {
     setSearchBar(event.target.value);
     // console.log(searchBar);
   };
+
+  if(loadingProduct) return <h1 className="text-center my-10 text-2xl italic">Loading...</h1>
 
   return (
     <>
