@@ -32,13 +32,13 @@ const Home = () => {
      bg-blue-400 p-6 mb-5 justify-between "
       >
         <input
-          className="p-1 rounded-lg sticky"
+          className="p-1 rounded-lg w-full max-w-[240px]"
           placeholder="Search..."
           onChange={getValueInput}
         />
 
         <div className="p-1">
-          <a href="/#" className="p-1 ml-20 mr-2 bg-white rounded-md">
+          <a href="/#" className="p-1 mr-2 bg-white rounded-md">
             Chat
           </a>
           <a href="/#" className="p-1  bg-white rounded-md">
