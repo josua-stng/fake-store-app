@@ -1,17 +1,69 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ProductDetail = () => {
   const [products, setProducts] = useState(null);
   const [stockBarang, setStockBarang] = useState(0);
-  // const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
   const { productId } = useParams();
+
   const getProductById = async (productId) => {
     const response = await fetch(
       `https://fakestoreapi.com/products/${productId}`
     );
     return response;
   };
+
+  const addToCart = () => {
+    if (stockBarang > 0) {
+      let item = { ...products, quantity: stockBarang, id: Date.now() };
+      const newCart = [...cart, item];
+      setCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      setStockBarang(0);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: "Items add",
+      });
+    } else {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "warning",
+        title: "number of items cannot be empty",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const cartData = JSON.parse(localStorage.getItem("cart"));
+    if (cartData) {
+      setCart(cartData);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -32,17 +84,13 @@ const ProductDetail = () => {
   if (stockBarang < 0) {
     setStockBarang(0);
   }
-  // if (loading) return <h1>Loading</h1>;
-  // console.log(typeof(stockBarang));
-  // console.log(stockBarang * products?.price);
-  // console.log(typeof(products?.price));
+
   return (
     <div>
-      <Link
-        to="/"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 border border-blue-700 rounded "
-      >
-        Back
+      <Link to="/">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 w-20 border border-blue-700 rounded-lg m-3 ">
+          Back
+        </button>
       </Link>
       <div className="flex justify-center my-20 items-center">
         <div>
@@ -85,7 +133,10 @@ const ProductDetail = () => {
             <p>Subtotal: </p>
             <p>${(stockBarang * products?.price).toFixed(2)}</p>
           </div>
-          <button className="border-2 rounded-lg p-2 w-full bg-sky-600 text-white mt-5 hover:bg-sky-700">
+          <button
+            className="border-2 rounded-lg p-2 w-full bg-sky-600 text-white mt-5 hover:bg-sky-700"
+            onClick={addToCart}
+          >
             +Keranjang
           </button>
           <button className="border-2 rounded-lg p-2 w-full   ">
