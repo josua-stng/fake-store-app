@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Product from "../components/Product";
-// import Navbar from "./Navbar";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [searchBar, setSearchBar] = useState("");
-  const [loadingProduct,setLoadingProduct]= useState(true)
+  const [loadingProduct, setLoadingProduct] = useState(true);
+
   const getProduct = async () => {
-    setLoadingProduct(true)
+    setLoadingProduct(true);
     const response = await fetch("https://fakestoreapi.com/products");
     const data = await response.json();
     setProducts(data);
-    setLoadingProduct(false)
+    setLoadingProduct(false);
   };
 
   useEffect(() => {
@@ -20,10 +21,10 @@ const Home = () => {
 
   const getValueInput = (event) => {
     setSearchBar(event.target.value);
-    // console.log(searchBar);
   };
 
-  if(loadingProduct) return <h1 className="text-center my-10 text-2xl italic">Loading...</h1>
+  if (loadingProduct)
+    return <h1 className="text-center my-10 text-2xl italic">Loading...</h1>;
 
   return (
     <>
@@ -38,12 +39,12 @@ const Home = () => {
         />
 
         <div className="p-1">
-          <a href="/#" className="p-1 mr-2 bg-white rounded-md">
+          <a href="/#" className="p-2 mr-2 bg-white rounded-md hover:bg-slate-200">
             Chat
           </a>
-          <a href="/#" className="p-1  bg-white rounded-md">
-            Bantuan
-          </a>
+          <button className="bg-white p-1 rounded-md hover:bg-slate-200">
+            <Link to="/cart">Keranjang</Link>
+          </button>
         </div>
       </div>
       <div className="max-w-6xl mx-auto">
