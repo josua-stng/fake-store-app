@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Product from "../components/Product";
-
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [searchBar, setSearchBar] = useState("");
@@ -33,16 +32,13 @@ const Home = () => {
      bg-blue-400 p-6 mb-5 justify-between "
       >
         <input
-          className="p-1 rounded-lg w-full max-w-[240px]"
+          className="p-1 rounded-lg w-full max-w-[240px] h-10"
           placeholder="Search..."
           onChange={getValueInput}
         />
 
-        <div className="p-1">
-          <a href="/#" className="p-2 mr-2 bg-white rounded-md hover:bg-slate-200">
-            Chat
-          </a>
-          <button className="bg-white p-1 rounded-md hover:bg-slate-200">
+        <div className="p-1 flex ">
+          <button className="bg-white w-[90px] rounded-md hover:bg-slate-200 h-[36px] ">
             <Link to="/cart">Keranjang</Link>
           </button>
         </div>
