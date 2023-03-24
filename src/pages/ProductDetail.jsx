@@ -43,7 +43,7 @@ const ProductDetail = () => {
         toast: true,
         position: "top-end",
         showConfirmButton: false,
-        timer: 1000,
+        timer: 1500,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -107,27 +107,34 @@ const ProductDetail = () => {
           </p>
         </div>
       </div>
-      <div className="grid  lg:grid-cols-2 gap-10 ">
-        <div className=" w-6/7 text-base p-5 bg-slate-200 mx-2 h-full">
-          <h2 className="mb-4 font-bold text-lg">Detail Product</h2>
-          <p className="mb-3">Desc: {products?.description}</p>
-          <p className="mb-3">Type: {products?.category}</p>
-          <p className="mb-3">Price: ${products?.price}</p>
-          <p className="mb-3">Terjual: {products?.rating.count}</p>
-          <p>Rating: {products?.rating.rate}</p>
+
+      <div className="lg:flex lg:justify-evenly mb-5">
+
+        <div className="md:w-[620px] md:mb-5 md:m-auto lg:w-[520px] h-full p-5 text-base bg-slate-200">
+          <div>
+            <h2 className="mb-4 font-bold text-2xl">Detail Product</h2>
+            <p className="mb-3">Desc: {products?.description}</p>
+            <p className="mb-3">Type: {products?.category}</p>
+            <p className="mb-3">Price: ${products?.price}</p>
+            <p className="mb-3">Terjual: {products?.rating.count}</p>
+            <p>Rating: {products?.rating.rate}</p>
+          </div>
         </div>
 
-        <div className="border-2 w-80 p-5">
+        <div className="m-auto mt-5 w-2/3 bg-slate-200 md:m-auto md:w-[400px] lg:w-[330px] h-full p-5">
+          <div className="flex flex-col justify-center items-center">
+
           <h2 className="mb-2">Atur jumlah barang</h2>
           <img
             src={`${products?.image}`}
             alt="image_product"
-            className="w-12 mb-2"
+            className="w-12 mb-4 "
           />
-          <div className="flex border-2 w-32 justify-center align-center">
-            <button onClick={stockReductItems}>-</button>
+          <div className="flex border-2 w-32 justify-center align-center bg-white">
+            <button onClick={stockReductItems} className="border-r-2 pr-3">-</button>
             <p className="ml-7 mr-7">{stockBarang}</p>
-            <button onClick={stockAddItesm}>+</button>
+            <button onClick={stockAddItesm} className="border-l-2 pl-3">+</button>
+          </div>
           </div>
           <div className="flex justify-between mt-2">
             <p>Subtotal: </p>
