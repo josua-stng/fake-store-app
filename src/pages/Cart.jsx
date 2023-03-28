@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { TrashIcon } from "@heroicons/react/20/solid";
 
 const Cart = () => {
   const [productCart, setProductCart] = useState([]);
@@ -12,9 +13,31 @@ const Cart = () => {
   let totalPrice = 0;
   if (productCart && productCart.length > 0) {
     totalPrice = productCart.reduce((total, product) => {
-      return total + product.price;
+      return total +(product.price * product.quantity);
     }, 0);
   }
+  const incrementProduct = (productId) =>{
+    const updatedCart = productCart.map((product)=>{
+      if(productId === product.id){
+       return {...product,quantity:product.quantity +1};
+      }
+      return product
+    })
+    localStorage.setItem("cart",JSON.stringify(updatedCart));
+    setProductCart(updatedCart)
+  }
+  
+  const decrementProduct = (productId) =>{
+    const updatedCart = productCart.map((product)=>{
+      if(productId === product.id){
+        return {...product , quantity:product.quantity - 1};
+      }
+      return product;
+    }).filter((product) => product.quantity > 0 )
+    localStorage.setItem("cart",JSON.stringify(updatedCart));
+    setProductCart(updatedCart)
+  }
+
 
   const deleteProduct = (productId) => {
     const updatedCart = productCart.filter(
@@ -22,7 +45,9 @@ const Cart = () => {
     );
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setProductCart(updatedCart);
+    console.log("success");
   };
+
 
   return (
     <>
@@ -32,8 +57,7 @@ const Cart = () => {
           placeholder="Search..."
         />
         <div className="p-1">
-       
-        <button className="bg-white w-[90px] rounded-md hover:bg-slate-200 h-[36px] mr-3.5">
+          <button className="bg-white w-[90px] rounded-md hover:bg-slate-200 h-[36px] mr-3.5">
             <Link to="/cart">Keranjang</Link>
           </button>
         </div>
@@ -47,7 +71,9 @@ const Cart = () => {
         <div>
           {!productCart || productCart.length === 0 ? (
             <div>
-              <h1 className="text-3xl font-bold mb-12 mt-16 lg:mt-16">Cart is empty</h1>
+              <h1 className="ml-10 text-3xl font-bold mb-12 mt-16 lg:mt-16">
+                Cart is empty
+              </h1>
             </div>
           ) : (
             productCart.map((product) => {
@@ -62,12 +88,20 @@ const Cart = () => {
                   <div className=" w-[200px] h-35">
                     <p className="font-bold">{product.title}</p>
                     <p className="pt-2">${product.price}</p>
-                    <button
-                      className="mt-8 ml-10 lg:ml-36 bg-sky-300 w-24 h-10 text-slate-900 hover:bg-sky-200 rounded-lg"
-                      onClick={() => deleteProduct(product.id)}
-                    >
-                      Delete
-                    </button>
+
+                    <div className="flex justify-around mt-5">
+                      <div>
+                        <button onClick={() => deleteProduct(product.id)}>
+                        <TrashIcon className="w-7" />
+                        </button>
+                      </div>
+
+                      <div className="flex border-2 w-32 justify-center items-center bg-white">
+                        <button className="border-r-2 pr-3"onClick={() => decrementProduct(product.id)} >-</button>
+                        <p className="ml-7 mr-7">{product.quantity}</p>
+                        <button className="border-l-2 pl-3" onClick={() => incrementProduct(product.id)}>+</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
@@ -82,8 +116,9 @@ const Cart = () => {
             <p className="pb-5 text-sm">
               of {productCart ? productCart.length : ""} products
             </p>
-            <button className="bg-indigo-500 text-white w-32 h-12 rounded-lg hover:bg-indigo-400"
-            disabled={!totalPrice}
+            <button
+              className="bg-indigo-500 text-white w-32 h-12 rounded-lg hover:bg-indigo-400"
+              disabled={!totalPrice}
             >
               Order Now
             </button>
